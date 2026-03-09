@@ -1,0 +1,37 @@
+.usage-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.day-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.day-label {
+  font-size: 0.78rem;
+  color: #888;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.pill-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pill-row {
+  display: flex;
+  gap: 5px;
+}
+
+.day-total {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
