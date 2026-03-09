@@ -11,11 +11,10 @@ function appTotal(appUsage) {
 
 export default function WeeklyTotal({ usage }) {
   const total = APPS.reduce((sum, app) => sum + appTotal(usage[app.name]), 0)
-  const display = total % 1 === 0 ? `${total} hours` : `${total} hours`
   return (
     <div className="weekly-total">
       <span className="weekly-label">Weekly Usage Total</span>
-      <span className="weekly-value">{display}</span>
+      <span className="weekly-value">{total} hours</span>
     </div>
   )
 }
