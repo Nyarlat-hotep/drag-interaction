@@ -15,7 +15,9 @@
   padding: 2rem 2rem 2.5rem;
   box-shadow: 0 2px 24px rgba(0,0,0,0.08);
   overflow-y: auto;
+  scrollbar-width: none;
 }
+.app::-webkit-scrollbar { display: none; }
 
 .physics-card {
   flex: 2;
