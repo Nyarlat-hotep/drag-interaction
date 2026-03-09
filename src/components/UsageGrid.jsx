@@ -12,10 +12,9 @@ function calcDayTotal(slots) {
 export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange, onPointerMove }) {
   return (
     <div className="usage-grid" onPointerMove={onPointerMove}>
-      {DAYS.map((day, dayIndex) => {
+      {DAYS.map((day) => {
         const slots = usage[activeApp][day]
         const total = calcDayTotal(slots)
-        const isFirst = dayIndex === 0
         return (
           <div key={day} className="day-col">
             <div className="day-label">{day}</div>
@@ -39,7 +38,7 @@ export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange,
                   </div>
                   {HOUR_MARKERS[row] && (
                     <div className="hour-marker">
-                      {isFirst && <span className="hour-label">{HOUR_MARKERS[row]}</span>}
+                      <span className="hour-label">{HOUR_MARKERS[row]}</span>
                       <div className="hour-line" />
                     </div>
                   )}
