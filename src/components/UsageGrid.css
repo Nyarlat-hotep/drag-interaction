@@ -41,7 +41,7 @@
   align-items: center;
   height: 16px;
   gap: 4px;
-  margin: 0 -6px;
+  margin: 0 -6px 0 -34px;
 }
 
 .hour-label {
