@@ -1,14 +1,13 @@
 import Pill from './Pill'
 import './UsageGrid.css'
-import { DAYS } from '../data'
+import { DAYS, SLOTS_PER_DAY } from '../data'
 
 function calcDayTotal(slots) {
   return slots.reduce((sum, v) => sum + v, 0)
 }
 
 function formatHours(h) {
-  if (h === 0) return '0h'
-  return h % 1 === 0 ? `${h}h` : `${h}h`
+  return `${h}h`
 }
 
 export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange }) {
@@ -21,7 +20,7 @@ export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange 
           <div key={day} className="day-col">
             <div className="day-label">{day}</div>
             <div className="pill-rows">
-              {Array.from({ length: 12 }, (_, row) => (
+              {Array.from({ length: SLOTS_PER_DAY / 2 }, (_, row) => (
                 <div key={row} className="pill-row">
                   {[0, 1].map((col) => {
                     const slotIndex = row * 2 + col
