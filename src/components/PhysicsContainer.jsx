@@ -97,6 +97,9 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
   return (
     <div className="physics-wrap">
       <canvas ref={canvasRef} className="physics-canvas" />
+      {!hasAnyUsage && (
+        <div className="physics-empty">Fill in your usage to see the pile grow</div>
+      )}
       {hasAnyUsage && (
         <div className="physics-legend">
           {APPS.map(app => {
