@@ -1,12 +1,11 @@
 .physics-wrap {
   position: relative;
   background: #f0f0f0;
-  border-radius: 12px;
-  overflow: hidden;
   height: 100%;
   min-height: 200px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .physics-canvas {

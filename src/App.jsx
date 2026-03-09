@@ -15,17 +15,21 @@ function computeFillValue(clientY, element) {
 export default function App() {
   const [activeApp, setActiveApp] = useState(APPS[0].name)
   const [usage, setUsage] = useState(makeEmptyUsage)
-  const dragRef = useRef({ active: false, mode: null }) // mode: 'fill' | 'clear'
+  const dragRef     = useRef({ active: false, mode: null }) // mode: 'fill' | 'clear'
   const activeAppRef = useRef(activeApp)
-  const physicsRef    = useRef()
-  const prevUsageRef  = useRef(null)
+  const physicsRef  = useRef()
+  const prevUsageRef = useRef(null)
+  const lastSlotRef  = useRef({}) // { [day]: slotIndex } — tracks last touched slot per day for backfill
   useEffect(() => { activeAppRef.current = activeApp }, [activeApp])
 
   const activeColor = APPS.find(a => a.name === activeApp)?.color ?? '#000'
 
   // End drag on pointer up anywhere
   useEffect(() => {
-    const end = () => { dragRef.current.active = false }
+    const end = () => {
+      dragRef.current.active = false
+      lastSlotRef.current = {}
+    }
     window.addEventListener('pointerup', end)
     return () => window.removeEventListener('pointerup', end)
   }, [])
@@ -68,12 +72,25 @@ export default function App() {
     })
   }, [])
 
+  // Fill any skipped slots between last and current (ensures left→right, top→bottom order)
+  const fillWithBackfill = useCallback((day, slotIndex, value) => {
+    const last = lastSlotRef.current[day]
+    if (last !== undefined && slotIndex > last + 1) {
+      for (let i = last + 1; i < slotIndex; i++) {
+        applySlot(day, i, 1)
+      }
+    }
+    lastSlotRef.current[day] = slotIndex
+    applySlot(day, slotIndex, value)
+  }, [applySlot])
+
   const handleSlotChange = useCallback((e, day, slotIndex, eventType) => {
     if (eventType === 'down') {
       e.preventDefault()
       const currentValue = usage[activeApp][day][slotIndex]
       const mode = currentValue === 1 ? 'clear' : 'fill'
       dragRef.current = { active: true, mode }
+      lastSlotRef.current = { [day]: slotIndex }
       if (mode === 'fill') {
         applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
       } else {
@@ -83,8 +100,9 @@ export default function App() {
 
     if (eventType === 'enter' && dragRef.current.active) {
       if (dragRef.current.mode === 'fill') {
-        applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
+        fillWithBackfill(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
       } else {
+        lastSlotRef.current[day] = slotIndex
         setUsage(prev => {
           const app = activeAppRef.current
           const currentValue = prev[app][day][slotIndex]
@@ -96,7 +114,7 @@ export default function App() {
         })
       }
     }
-  }, [applySlot])
+  }, [applySlot, fillWithBackfill])
 
   // Pointer move on grid: elementFromPoint handles fast drags that skip pointerenter
   const handlePointerMove = useCallback((e) => {
@@ -108,8 +126,9 @@ export default function App() {
     if (dragRef.current.mode === 'fill') {
       const rect = pill.getBoundingClientRect()
       const relY = (e.clientY - rect.top) / rect.height
-      applySlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+      fillWithBackfill(day, slotIndex, relY < 0.5 ? 0.5 : 1)
     } else {
+      lastSlotRef.current[day] = slotIndex
       setUsage(prev => {
         const app = activeAppRef.current
         const currentValue = prev[app][day][slotIndex]
@@ -120,7 +139,7 @@ export default function App() {
         return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
       })
     }
-  }, [applySlot])
+  }, [fillWithBackfill])
 
   // Touch support: touchmove fires only on the element where touch started,
   // so we use elementFromPoint to find the pill under the finger
@@ -138,8 +157,9 @@ export default function App() {
     if (dragRef.current.mode === 'fill') {
       const rect = pill.getBoundingClientRect()
       const relY = (touch.clientY - rect.top) / rect.height
-      applySlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+      fillWithBackfill(day, slotIndex, relY < 0.5 ? 0.5 : 1)
     } else {
+      lastSlotRef.current[day] = slotIndex
       setUsage(prev => {
         const currentValue = prev[app][day][slotIndex]
         const next = currentValue >= 0.5 ? currentValue - 0.5 : 0
@@ -149,33 +169,31 @@ export default function App() {
         return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
       })
     }
-  }, [applySlot])
+  }, [fillWithBackfill])
 
   return (
-    <div
-      className="app"
-      onTouchMove={handleTouchMove}
-      style={{ touchAction: 'none' }}
-    >
-      <h1 className="app-title">How much time do you spend?</h1>
-      <p className="app-subtitle">
-        Drag across the dots to paint your daily usage. Half-fill for 30 min, full for 1 hour.
-      </p>
-      <TabBar activeApp={activeApp} onSelect={setActiveApp} />
-      <div className="app-body">
-        <div className="app-grid-col">
-          <UsageGrid
-            usage={usage}
-            activeApp={activeApp}
-            activeColor={activeColor}
-            onSlotChange={handleSlotChange}
-            onPointerMove={handlePointerMove}
-          />
-          <WeeklyTotal usage={usage} />
-        </div>
-        <div className="app-physics-col">
-          <PhysicsContainer ref={physicsRef} usage={usage} />
-        </div>
+    <div className="app-layout">
+      <div
+        className="app"
+        onTouchMove={handleTouchMove}
+        style={{ touchAction: 'none' }}
+      >
+        <h1 className="app-title">How much time do you spend?</h1>
+        <p className="app-subtitle">
+          Drag across the dots to paint your daily usage. Half-fill for 30 min, full for 1 hour.
+        </p>
+        <TabBar activeApp={activeApp} onSelect={setActiveApp} />
+        <UsageGrid
+          usage={usage}
+          activeApp={activeApp}
+          activeColor={activeColor}
+          onSlotChange={handleSlotChange}
+          onPointerMove={handlePointerMove}
+        />
+        <WeeklyTotal usage={usage} />
+      </div>
+      <div className="physics-card">
+        <PhysicsContainer ref={physicsRef} usage={usage} />
       </div>
     </div>
   )

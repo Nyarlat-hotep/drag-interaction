@@ -1,26 +1,27 @@
+.app-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 960px;
+}
+
 .app {
   background: #fff;
   border-radius: 20px;
   padding: 2rem 2rem 2.5rem;
-  width: 100%;
-  max-width: 960px;
+  flex: 1;
+  min-width: 0;
   box-shadow: 0 2px 24px rgba(0,0,0,0.08);
 }
 
-.app-body {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-
-.app-grid-col {
-  flex: 1;
-  min-width: 0;
-}
-
-.app-physics-col {
+.physics-card {
   width: 220px;
   flex-shrink: 0;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
   align-self: stretch;
 }
 
