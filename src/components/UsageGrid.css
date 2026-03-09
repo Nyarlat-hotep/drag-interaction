@@ -41,11 +41,11 @@
   align-items: center;
   height: 16px;
   gap: 4px;
-  margin: 0 -6px 0 -34px;
+  margin: 0 -6px 0 -24px;
 }
 
 .hour-label {
-  font-size: 12px;
+  font-size: 10px;
   color: #aaa;
   line-height: 1;
   white-space: nowrap;
