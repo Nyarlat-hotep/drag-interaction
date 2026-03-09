@@ -23,7 +23,9 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 2px 24px rgba(0,0,0,0.08);
-  overflow: hidden;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-title {
