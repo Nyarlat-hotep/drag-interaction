@@ -1,8 +1,21 @@
 .app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem 2rem 2.5rem;
+  width: 100%;
+  max-width: 720px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: #111;
+}
+
+.app-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1.75rem;
 }
