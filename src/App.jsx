@@ -89,10 +89,12 @@ export default function App() {
         applySlot(day, i, 1)
       }
     } else {
-      // Moving backward: clear all slots from last down to slotIndex+1
-      for (let i = last; i > slotIndex; i--) {
+      // Moving backward: clear from last down through current slot (all the way to 0)
+      for (let i = last; i >= slotIndex; i--) {
         applySlot(day, i, 0)
       }
+      lastSlotRef.current[day] = slotIndex
+      return
     }
 
     lastSlotRef.current[day] = slotIndex
