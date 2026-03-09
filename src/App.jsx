@@ -108,6 +108,14 @@ export default function App() {
     applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
   }, [applySlot])
 
+  // Compute fill value from cursor position within a pill.
+  // On the SAME pill, top-third clears to 0 so the first pill (slot 0) can be erased.
+  // On a NEW pill (entering from outside), only 0.5 or 1 — no accidental clearing.
+  function pillValue(relY, isSamePill) {
+    if (isSamePill) return relY < 0.33 ? 0 : relY < 0.66 ? 0.5 : 1
+    return relY < 0.5 ? 0.5 : 1
+  }
+
   // Pointer move on grid: elementFromPoint handles fast drags that skip pointerenter
   const handlePointerMove = useCallback((e) => {
     if (!dragRef.current.active) return
@@ -117,7 +125,7 @@ export default function App() {
     const day = pill.dataset.day
     const rect = pill.getBoundingClientRect()
     const relY = (e.clientY - rect.top) / rect.height
-    handleDragSlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+    handleDragSlot(day, slotIndex, pillValue(relY, lastSlotRef.current[day] === slotIndex))
   }, [handleDragSlot])
 
   // Touch support: touchmove fires only on the element where touch started,
@@ -132,7 +140,7 @@ export default function App() {
     const day = pill.dataset.day
     const rect = pill.getBoundingClientRect()
     const relY = (touch.clientY - rect.top) / rect.height
-    handleDragSlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+    handleDragSlot(day, slotIndex, pillValue(relY, lastSlotRef.current[day] === slotIndex))
   }, [handleDragSlot])
 
   return (
