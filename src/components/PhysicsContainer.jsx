@@ -16,7 +16,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
   useImperativeHandle(ref, () => ({
     spawnDot(color) {
       if (!engineRef.current || !canvasRef.current) return
-      const W = canvasRef.current.width
+      const W = canvasRef.current.offsetWidth  // CSS pixels
       const x = W * 0.1 + Math.random() * W * 0.8
       const body = Bodies.circle(x, -DOT_RADIUS * 2, DOT_RADIUS, {
         restitution: 0.4,
@@ -57,9 +57,13 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
     }
 
     const resize = () => {
-      canvas.width  = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-      if (engineRef.current) rebuildWalls(engineRef.current.world, canvas.width, canvas.height)
+      const dpr = window.devicePixelRatio || 1
+      const cssW = canvas.offsetWidth
+      const cssH = canvas.offsetHeight
+      canvas.width  = cssW * dpr
+      canvas.height = cssH * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      if (engineRef.current) rebuildWalls(engineRef.current.world, cssW, cssH)
     }
 
     const ro = new ResizeObserver(resize)
@@ -71,7 +75,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
 
     function draw() {
       rafRef.current = requestAnimationFrame(draw)
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
       for (const { body, color } of bodiesRef.current) {
         const { x, y } = body.position
         ctx.beginPath()
