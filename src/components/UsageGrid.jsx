@@ -2,43 +2,51 @@ import Pill from './Pill'
 import './UsageGrid.css'
 import { DAYS, SLOTS_PER_DAY } from '../data'
 
+// Each row = 2 pills × max 1h = 2h. Markers sit after the row that completes each interval.
+const HOUR_MARKERS = { 1: '4h', 3: '8h', 5: '12h', 7: '16h', 9: '20h' }
+
 function calcDayTotal(slots) {
   return slots.reduce((sum, v) => sum + v, 0)
-}
-
-function formatHours(h) {
-  return `${h}h`
 }
 
 export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange, onPointerMove }) {
   return (
     <div className="usage-grid" onPointerMove={onPointerMove}>
-      {DAYS.map((day) => {
+      {DAYS.map((day, dayIndex) => {
         const slots = usage[activeApp][day]
         const total = calcDayTotal(slots)
+        const isFirst = dayIndex === 0
         return (
           <div key={day} className="day-col">
             <div className="day-label">{day}</div>
             <div className="pill-rows">
               {Array.from({ length: SLOTS_PER_DAY / 2 }, (_, row) => (
-                <div key={row} className="pill-row">
-                  {[0, 1].map((col) => {
-                    const slotIndex = row * 2 + col
-                    return (
-                      <Pill
-                        key={col}
-                        value={slots[slotIndex]}
-                        color={activeColor}
-                        slotIndex={slotIndex}
-                        day={day}
-                        onPointerDown={(e) => onSlotChange(e, day, slotIndex)}
-                      />
-                    )
-                  })}
+                <div key={row}>
+                  <div className="pill-row">
+                    {[0, 1].map((col) => {
+                      const slotIndex = row * 2 + col
+                      return (
+                        <Pill
+                          key={col}
+                          value={slots[slotIndex]}
+                          color={activeColor}
+                          slotIndex={slotIndex}
+                          day={day}
+                          onPointerDown={(e) => onSlotChange(e, day, slotIndex)}
+                        />
+                      )
+                    })}
+                  </div>
+                  {HOUR_MARKERS[row] && (
+                    <div className="hour-marker">
+                      {isFirst && <span className="hour-label">{HOUR_MARKERS[row]}</span>}
+                      <div className="hour-line" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
-            <div className="day-total">{formatHours(total)}</div>
+            <div className="day-total">{total}h</div>
           </div>
         )
       })}
