@@ -15,11 +15,11 @@ function computeFillValue(clientY, element) {
 export default function App() {
   const [activeApp, setActiveApp] = useState(APPS[0].name)
   const [usage, setUsage] = useState(makeEmptyUsage)
-  const dragRef     = useRef({ active: false, mode: null }) // mode: 'fill' | 'clear'
+  const dragRef     = useRef({ active: false })
   const activeAppRef = useRef(activeApp)
   const physicsRef  = useRef()
   const prevUsageRef = useRef(null)
-  const lastSlotRef  = useRef({}) // { [day]: slotIndex } — tracks last touched slot per day for backfill
+  const lastSlotRef  = useRef({}) // { [day]: slotIndex }
   useEffect(() => { activeAppRef.current = activeApp }, [activeApp])
 
   const activeColor = APPS.find(a => a.name === activeApp)?.color ?? '#000'
@@ -72,18 +72,29 @@ export default function App() {
     })
   }, [])
 
-  // Fill any skipped slots between last and current (ensures left→right, top→bottom order).
-  // Also completes the previous pill to full before advancing — no two adjacent half-fills.
-  const fillWithBackfill = useCallback((day, slotIndex, value) => {
+  // Direction-aware drag: forward fills (completing skipped pills), backward clears.
+  const handleDragSlot = useCallback((day, slotIndex, value) => {
     const last = lastSlotRef.current[day]
-    if (last !== undefined && slotIndex > last) {
-      // Complete the last-touched pill before moving forward
+
+    if (last === undefined || slotIndex === last) {
+      lastSlotRef.current[day] = slotIndex
+      applySlot(day, slotIndex, value)
+      return
+    }
+
+    if (slotIndex > last) {
+      // Moving forward: complete last pill, fill any skipped, set current
       applySlot(day, last, 1)
-      // Fill any skipped slots as full too
       for (let i = last + 1; i < slotIndex; i++) {
         applySlot(day, i, 1)
       }
+    } else {
+      // Moving backward: clear all slots from last down to slotIndex+1
+      for (let i = last; i > slotIndex; i--) {
+        applySlot(day, i, 0)
+      }
     }
+
     lastSlotRef.current[day] = slotIndex
     applySlot(day, slotIndex, value)
   }, [applySlot])
@@ -91,34 +102,15 @@ export default function App() {
   const handleSlotChange = useCallback((e, day, slotIndex, eventType) => {
     if (eventType === 'down') {
       e.preventDefault()
-      const currentValue = usage[activeApp][day][slotIndex]
-      const mode = currentValue === 1 ? 'clear' : 'fill'
-      dragRef.current = { active: true, mode }
+      dragRef.current = { active: true }
       lastSlotRef.current = { [day]: slotIndex }
-      if (mode === 'fill') {
-        applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
-      } else {
-        applySlot(day, slotIndex, 0.5)
-      }
+      applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
     }
 
     if (eventType === 'enter' && dragRef.current.active) {
-      if (dragRef.current.mode === 'fill') {
-        fillWithBackfill(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
-      } else {
-        lastSlotRef.current[day] = slotIndex
-        setUsage(prev => {
-          const app = activeAppRef.current
-          const currentValue = prev[app][day][slotIndex]
-          const next = currentValue >= 0.5 ? currentValue - 0.5 : 0
-          if (next === currentValue) return prev
-          const daySlots = [...prev[app][day]]
-          daySlots[slotIndex] = next
-          return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
-        })
-      }
+      handleDragSlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
     }
-  }, [applySlot, fillWithBackfill])
+  }, [applySlot, handleDragSlot])
 
   // Pointer move on grid: elementFromPoint handles fast drags that skip pointerenter
   const handlePointerMove = useCallback((e) => {
@@ -127,23 +119,10 @@ export default function App() {
     if (!pill) return
     const slotIndex = Number(pill.dataset.slot)
     const day = pill.dataset.day
-    if (dragRef.current.mode === 'fill') {
-      const rect = pill.getBoundingClientRect()
-      const relY = (e.clientY - rect.top) / rect.height
-      fillWithBackfill(day, slotIndex, relY < 0.5 ? 0.5 : 1)
-    } else {
-      lastSlotRef.current[day] = slotIndex
-      setUsage(prev => {
-        const app = activeAppRef.current
-        const currentValue = prev[app][day][slotIndex]
-        const next = currentValue >= 0.5 ? currentValue - 0.5 : 0
-        if (next === currentValue) return prev
-        const daySlots = [...prev[app][day]]
-        daySlots[slotIndex] = next
-        return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
-      })
-    }
-  }, [fillWithBackfill])
+    const rect = pill.getBoundingClientRect()
+    const relY = (e.clientY - rect.top) / rect.height
+    handleDragSlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+  }, [handleDragSlot])
 
   // Touch support: touchmove fires only on the element where touch started,
   // so we use elementFromPoint to find the pill under the finger
@@ -151,29 +130,14 @@ export default function App() {
     if (!dragRef.current.active) return
     e.preventDefault()
     const touch = e.touches[0]
-    const el = document.elementFromPoint(touch.clientX, touch.clientY)
-    if (!el) return
-    const pill = el.closest('[data-slot]')
+    const pill = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('[data-slot]')
     if (!pill) return
     const slotIndex = Number(pill.dataset.slot)
     const day = pill.dataset.day
-    const app = activeAppRef.current
-    if (dragRef.current.mode === 'fill') {
-      const rect = pill.getBoundingClientRect()
-      const relY = (touch.clientY - rect.top) / rect.height
-      fillWithBackfill(day, slotIndex, relY < 0.5 ? 0.5 : 1)
-    } else {
-      lastSlotRef.current[day] = slotIndex
-      setUsage(prev => {
-        const currentValue = prev[app][day][slotIndex]
-        const next = currentValue >= 0.5 ? currentValue - 0.5 : 0
-        if (next === currentValue) return prev
-        const daySlots = [...prev[app][day]]
-        daySlots[slotIndex] = next
-        return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
-      })
-    }
-  }, [fillWithBackfill])
+    const rect = pill.getBoundingClientRect()
+    const relY = (touch.clientY - rect.top) / rect.height
+    handleDragSlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+  }, [handleDragSlot])
 
   return (
     <div className="app-layout">
