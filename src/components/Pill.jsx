@@ -1,6 +1,6 @@
 import './Pill.css'
 
-export default function Pill({ value, color, slotIndex, day, onPointerEnter, onPointerDown }) {
+export default function Pill({ value, color, slotIndex, day, onPointerDown }) {
   const fillPct = value === 1 ? '100%' : value === 0.5 ? '50%' : '0%'
 
   return (
@@ -9,7 +9,6 @@ export default function Pill({ value, color, slotIndex, day, onPointerEnter, onP
       data-slot={slotIndex}
       data-day={day}
       onPointerDown={onPointerDown}
-      onPointerEnter={onPointerEnter}
     >
       <div
         className="pill-fill"

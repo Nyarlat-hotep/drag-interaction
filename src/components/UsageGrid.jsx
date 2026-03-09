@@ -31,8 +31,7 @@ export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange,
                         color={activeColor}
                         slotIndex={slotIndex}
                         day={day}
-                        onPointerDown={(e) => onSlotChange(e, day, slotIndex, 'down')}
-                        onPointerEnter={(e) => onSlotChange(e, day, slotIndex, 'enter')}
+                        onPointerDown={(e) => onSlotChange(e, day, slotIndex)}
                       />
                     )
                   })}

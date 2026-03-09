@@ -101,18 +101,12 @@ export default function App() {
     applySlot(day, slotIndex, value)
   }, [applySlot])
 
-  const handleSlotChange = useCallback((e, day, slotIndex, eventType) => {
-    if (eventType === 'down') {
-      e.preventDefault()
-      dragRef.current = { active: true }
-      lastSlotRef.current = { [day]: slotIndex }
-      applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
-    }
-
-    if (eventType === 'enter' && dragRef.current.active) {
-      handleDragSlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
-    }
-  }, [applySlot, handleDragSlot])
+  const handleSlotChange = useCallback((e, day, slotIndex) => {
+    e.preventDefault()
+    dragRef.current = { active: true }
+    lastSlotRef.current = { [day]: slotIndex }
+    applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
+  }, [applySlot])
 
   // Pointer move on grid: elementFromPoint handles fast drags that skip pointerenter
   const handlePointerMove = useCallback((e) => {
