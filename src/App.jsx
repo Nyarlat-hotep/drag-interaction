@@ -3,6 +3,7 @@ import { APPS, makeEmptyUsage } from './data'
 import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
 import WeeklyTotal from './components/WeeklyTotal'
+import PhysicsContainer from './components/PhysicsContainer'
 import './App.css'
 
 function computeFillValue(clientY, element) {
@@ -16,6 +17,8 @@ export default function App() {
   const [usage, setUsage] = useState(makeEmptyUsage)
   const dragRef = useRef({ active: false, mode: null }) // mode: 'fill' | 'clear'
   const activeAppRef = useRef(activeApp)
+  const physicsRef    = useRef()
+  const prevUsageRef  = useRef(null)
   useEffect(() => { activeAppRef.current = activeApp }, [activeApp])
 
   const activeColor = APPS.find(a => a.name === activeApp)?.color ?? '#000'
@@ -26,6 +29,31 @@ export default function App() {
     window.addEventListener('pointerup', end)
     return () => window.removeEventListener('pointerup', end)
   }, [])
+
+  useEffect(() => {
+    if (!prevUsageRef.current) {
+      prevUsageRef.current = usage
+      return
+    }
+    const prev = prevUsageRef.current
+    for (const app of APPS) {
+      for (const day of Object.keys(prev[app.name])) {
+        const prevSlots = prev[app.name][day]
+        const nextSlots = usage[app.name][day]
+        for (let i = 0; i < nextSlots.length; i++) {
+          const delta = nextSlots[i] - prevSlots[i]
+          if (delta > 0) {
+            const dots = Math.round(delta / 0.5)
+            for (let d = 0; d < dots; d++) physicsRef.current?.spawnDot(app.color)
+          } else if (delta < 0) {
+            const dots = Math.round(Math.abs(delta) / 0.5)
+            for (let d = 0; d < dots; d++) physicsRef.current?.removeDot(app.color)
+          }
+        }
+      }
+    }
+    prevUsageRef.current = usage
+  }, [usage])
 
   const applySlot = useCallback((day, slotIndex, newValue) => {
     setUsage(prev => {
@@ -117,6 +145,7 @@ export default function App() {
         onSlotChange={handleSlotChange}
       />
       <WeeklyTotal usage={usage} />
+      <PhysicsContainer ref={physicsRef} usage={usage} />
     </div>
   )
 }
