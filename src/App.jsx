@@ -72,10 +72,14 @@ export default function App() {
     })
   }, [])
 
-  // Fill any skipped slots between last and current (ensures left→right, top→bottom order)
+  // Fill any skipped slots between last and current (ensures left→right, top→bottom order).
+  // Also completes the previous pill to full before advancing — no two adjacent half-fills.
   const fillWithBackfill = useCallback((day, slotIndex, value) => {
     const last = lastSlotRef.current[day]
-    if (last !== undefined && slotIndex > last + 1) {
+    if (last !== undefined && slotIndex > last) {
+      // Complete the last-touched pill before moving forward
+      applySlot(day, last, 1)
+      // Fill any skipped slots as full too
       for (let i = last + 1; i < slotIndex; i++) {
         applySlot(day, i, 1)
       }
