@@ -5,7 +5,7 @@ import { APPS, DAYS } from '../data'
 
 const { Engine, World, Bodies, Runner } = Matter
 
-const DOT_RADIUS = 6
+const DOT_RADIUS = 12
 
 const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
   const canvasRef  = useRef()
