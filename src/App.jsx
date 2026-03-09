@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { APPS, makeEmptyUsage } from './data'
+import { APPS, DAYS, makeEmptyUsage } from './data'
 import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
 import WeeklyTotal from './components/WeeklyTotal'
@@ -37,7 +37,7 @@ export default function App() {
     }
     const prev = prevUsageRef.current
     for (const app of APPS) {
-      for (const day of Object.keys(prev[app.name])) {
+      for (const day of DAYS) {
         const prevSlots = prev[app.name][day]
         const nextSlots = usage[app.name][day]
         for (let i = 0; i < nextSlots.length; i++) {

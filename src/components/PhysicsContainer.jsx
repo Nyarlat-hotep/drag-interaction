@@ -42,16 +42,6 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    const resize = () => {
-      canvas.width  = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-      if (engineRef.current) rebuildWalls(engineRef.current.world, canvas.width, canvas.height)
-    }
-
-    const ro = new ResizeObserver(resize)
-    ro.observe(canvas)
-    resize()
-
     const engine = Engine.create({ gravity: { y: 1.5 } })
     engineRef.current = engine
 
@@ -66,7 +56,15 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       ])
     }
 
-    rebuildWalls(engine.world, canvas.width, canvas.height)
+    const resize = () => {
+      canvas.width  = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+      if (engineRef.current) rebuildWalls(engineRef.current.world, canvas.width, canvas.height)
+    }
+
+    const ro = new ResizeObserver(resize)
+    ro.observe(canvas)
+    resize()
 
     const runner = Runner.create()
     Runner.run(runner, engine)
