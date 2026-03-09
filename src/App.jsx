@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { APPS, DAYS, makeEmptyUsage } from './data'
+import { APPS, makeEmptyUsage } from './data'
 import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
 import './App.css'
@@ -48,7 +48,7 @@ export default function App() {
       if (mode === 'fill') {
         applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
       } else {
-        applySlot(day, slotIndex, currentValue === 1 ? 0.5 : 0)
+        applySlot(day, slotIndex, 0.5)
       }
     }
 
@@ -56,11 +56,18 @@ export default function App() {
       if (dragRef.current.mode === 'fill') {
         applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
       } else {
-        const currentValue = usage[activeApp][day][slotIndex]
-        applySlot(day, slotIndex, currentValue >= 0.5 ? currentValue - 0.5 : 0)
+        setUsage(prev => {
+          const app = activeAppRef.current
+          const currentValue = prev[app][day][slotIndex]
+          const next = currentValue >= 0.5 ? currentValue - 0.5 : 0
+          if (next === currentValue) return prev
+          const daySlots = [...prev[app][day]]
+          daySlots[slotIndex] = next
+          return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
+        })
       }
     }
-  }, [usage, activeApp, applySlot])
+  }, [applySlot])
 
   // Touch support: touchmove fires only on the element where touch started,
   // so we use elementFromPoint to find the pill under the finger
