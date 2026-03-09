@@ -3,15 +3,17 @@
 body {
   font-family: system-ui, -apple-system, sans-serif;
   background: #f0f0f0;
-  color: #111;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 #root {
+  height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 2rem 1rem 4rem;
+  align-items: stretch;
+  padding: 1.5rem;
 }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
