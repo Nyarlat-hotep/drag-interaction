@@ -50,7 +50,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       old.forEach(w => World.remove(world, w))
       const opts = { isStatic: true, label: 'wall', friction: 0.3, restitution: 0.2 }
       World.add(world, [
-        Bodies.rectangle(W / 2, H + 25,  W + 100, 50,   opts), // floor
+        Bodies.rectangle(W / 2, H + 23,  W + 100, 50,   opts), // floor (−2px so dots rest clear of canvas edge)
         Bodies.rectangle(-25,   H / 2,   50,      H * 2, opts), // left
         Bodies.rectangle(W + 25, H / 2,  50,      H * 2, opts), // right
       ])

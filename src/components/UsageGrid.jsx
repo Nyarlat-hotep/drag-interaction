@@ -10,9 +10,9 @@ function formatHours(h) {
   return `${h}h`
 }
 
-export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange }) {
+export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange, onPointerMove }) {
   return (
-    <div className="usage-grid">
+    <div className="usage-grid" onPointerMove={onPointerMove}>
       {DAYS.map((day) => {
         const slots = usage[activeApp][day]
         const total = calcDayTotal(slots)

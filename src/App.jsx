@@ -98,6 +98,30 @@ export default function App() {
     }
   }, [applySlot])
 
+  // Pointer move on grid: elementFromPoint handles fast drags that skip pointerenter
+  const handlePointerMove = useCallback((e) => {
+    if (!dragRef.current.active) return
+    const pill = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-slot]')
+    if (!pill) return
+    const slotIndex = Number(pill.dataset.slot)
+    const day = pill.dataset.day
+    if (dragRef.current.mode === 'fill') {
+      const rect = pill.getBoundingClientRect()
+      const relY = (e.clientY - rect.top) / rect.height
+      applySlot(day, slotIndex, relY < 0.5 ? 0.5 : 1)
+    } else {
+      setUsage(prev => {
+        const app = activeAppRef.current
+        const currentValue = prev[app][day][slotIndex]
+        const next = currentValue >= 0.5 ? currentValue - 0.5 : 0
+        if (next === currentValue) return prev
+        const daySlots = [...prev[app][day]]
+        daySlots[slotIndex] = next
+        return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
+      })
+    }
+  }, [applySlot])
+
   // Touch support: touchmove fires only on the element where touch started,
   // so we use elementFromPoint to find the pill under the finger
   const handleTouchMove = useCallback((e) => {
@@ -138,14 +162,21 @@ export default function App() {
         Drag across the dots to paint your daily usage. Half-fill for 30 min, full for 1 hour.
       </p>
       <TabBar activeApp={activeApp} onSelect={setActiveApp} />
-      <UsageGrid
-        usage={usage}
-        activeApp={activeApp}
-        activeColor={activeColor}
-        onSlotChange={handleSlotChange}
-      />
-      <WeeklyTotal usage={usage} />
-      <PhysicsContainer ref={physicsRef} usage={usage} />
+      <div className="app-body">
+        <div className="app-grid-col">
+          <UsageGrid
+            usage={usage}
+            activeApp={activeApp}
+            activeColor={activeColor}
+            onSlotChange={handleSlotChange}
+            onPointerMove={handlePointerMove}
+          />
+          <WeeklyTotal usage={usage} />
+        </div>
+        <div className="app-physics-col">
+          <PhysicsContainer ref={physicsRef} usage={usage} />
+        </div>
+      </div>
     </div>
   )
 }
