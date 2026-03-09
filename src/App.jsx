@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { APPS, makeEmptyUsage } from './data'
 import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
+import WeeklyTotal from './components/WeeklyTotal'
 import './App.css'
 
 function computeFillValue(clientY, element) {
@@ -115,6 +116,7 @@ export default function App() {
         activeColor={activeColor}
         onSlotChange={handleSlotChange}
       />
+      <WeeklyTotal usage={usage} />
     </div>
   )
 }
