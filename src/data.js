@@ -2,8 +2,8 @@ export const APPS = [
   { name: 'Instagram', color: '#E1306C' },
   { name: 'Facebook',  color: '#1877F2' },
   { name: 'TikTok',    color: '#EE1D52' },
-  { name: 'X',         color: '#555555' },
   { name: 'YouTube',   color: '#FF0000' },
+  { name: 'X',         color: '#555555' },
 ]
 
 export const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
