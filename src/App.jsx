@@ -101,6 +101,16 @@ export default function App() {
     applySlot(day, slotIndex, value)
   }, [applySlot])
 
+  const handleKeyActivate = useCallback((day, slotIndex) => {
+    setUsage(prev => {
+      const app = activeAppRef.current
+      const daySlots = [...prev[app][day]]
+      const cur = daySlots[slotIndex]
+      daySlots[slotIndex] = cur === 0 ? 0.5 : cur === 0.5 ? 1 : 0
+      return { ...prev, [app]: { ...prev[app], [day]: daySlots } }
+    })
+  }, [])
+
   const handleSlotChange = useCallback((e, day, slotIndex) => {
     e.preventDefault()
     dragRef.current = { active: true }
@@ -161,6 +171,7 @@ export default function App() {
           activeColor={activeColor}
           onSlotChange={handleSlotChange}
           onPointerMove={handlePointerMove}
+          onKeyActivate={handleKeyActivate}
         />
         <WeeklyTotal usage={usage} />
       </div>

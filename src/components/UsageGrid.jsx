@@ -9,7 +9,7 @@ function calcDayTotal(slots) {
   return slots.reduce((sum, v) => sum + v, 0)
 }
 
-export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange, onPointerMove }) {
+export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange, onPointerMove, onKeyActivate }) {
   return (
     <div className="usage-grid" onPointerMove={onPointerMove}>
       {DAYS.map((day) => {
@@ -32,6 +32,7 @@ export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange,
                           slotIndex={slotIndex}
                           day={day}
                           onPointerDown={(e) => onSlotChange(e, day, slotIndex)}
+                          onKeyActivate={() => onKeyActivate(day, slotIndex)}
                         />
                       )
                     })}
