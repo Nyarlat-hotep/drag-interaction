@@ -30,6 +30,7 @@ export default function Pill({ value, color, slotIndex, day, onPointerDown, onKe
       tabIndex={0}
       onPointerDown={onPointerDown}
       onKeyDown={handleKeyDown}
+      style={{ '--pill-color': color }}
     >
       <div
         className="pill-fill"
