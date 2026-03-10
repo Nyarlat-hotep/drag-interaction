@@ -75,7 +75,13 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
 
     function draw() {
       rafRef.current = requestAnimationFrame(draw)
-      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
+      const W = canvas.offsetWidth
+      const H = canvas.offsetHeight
+      ctx.clearRect(0, 0, W, H)
+      ctx.save()
+      ctx.beginPath()
+      ctx.rect(0, 0, W, H)
+      ctx.clip()
       for (const { body, color } of bodiesRef.current) {
         const { x, y } = body.position
         ctx.beginPath()
@@ -83,6 +89,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
         ctx.fillStyle = color
         ctx.fill()
       }
+      ctx.restore()
     }
     draw()
 
