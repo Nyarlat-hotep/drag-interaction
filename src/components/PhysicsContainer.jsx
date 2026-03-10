@@ -50,9 +50,9 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       old.forEach(w => World.remove(world, w))
       const opts = { isStatic: true, label: 'wall', friction: 0.3, restitution: 0.2 }
       World.add(world, [
-        Bodies.rectangle(W / 2, H + 23,  W + 100, 50,   opts), // floor (−2px so dots rest clear of canvas edge)
-        Bodies.rectangle(-25,   H / 2,   50,      H * 2, opts), // left
-        Bodies.rectangle(W + 25, H / 2,  50,      H * 2, opts), // right
+        Bodies.rectangle(W / 2,              H + 23,       W + 100, 50,    opts), // floor
+        Bodies.rectangle(DOT_RADIUS - 25,    H / 2,        50,      H * 2, opts), // left  (inner face at DOT_RADIUS)
+        Bodies.rectangle(W - DOT_RADIUS + 25, H / 2,       50,      H * 2, opts), // right (inner face at W-DOT_RADIUS)
       ])
     }
 
@@ -78,10 +78,6 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const W = canvas.offsetWidth
       const H = canvas.offsetHeight
       ctx.clearRect(0, 0, W, H)
-      ctx.save()
-      ctx.beginPath()
-      ctx.rect(0, 0, W, H)
-      ctx.clip()
       for (const { body, color } of bodiesRef.current) {
         const { x, y } = body.position
         ctx.beginPath()
@@ -89,7 +85,6 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
         ctx.fillStyle = color
         ctx.fill()
       }
-      ctx.restore()
     }
     draw()
 
