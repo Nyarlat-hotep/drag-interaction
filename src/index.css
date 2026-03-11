@@ -1,11 +1,56 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  color-scheme: dark;
+  --bg-body: #0f1117;
+  --bg-surface: #1a1d2e;
+  --bg-inset: #13151f;
+  --fg-primary: #e8e8f0;
+  --fg-muted: #888898;
+  --fg-dim: #55556a;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --pill-empty: rgba(255, 255, 255, 0.08);
+  --pill-border-hover: rgba(255, 255, 255, 0.18);
+  --tab-bar-bg: rgba(255, 255, 255, 0.06);
+  --tab-active-bg: rgba(255, 255, 255, 0.12);
+  --tab-active-shadow: rgba(0, 0, 0, 0.4);
+  --tab-inactive-color: #888898;
+  --hour-line-color: rgba(255, 255, 255, 0.08);
+  --weekly-border: rgba(255, 255, 255, 0.08);
+  --physics-bg: rgba(255, 255, 255, 0.04);
+  --physics-legend-color: #888898;
+  --physics-empty-color: #55556a;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg-body: #f0f0f0;
+  --bg-surface: #ffffff;
+  --bg-inset: #f5f5f5;
+  --fg-primary: #111111;
+  --fg-muted: #666666;
+  --fg-dim: #aaaaaa;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --pill-empty: #e4e4e4;
+  --pill-border-hover: rgba(0, 0, 0, 0.15);
+  --tab-bar-bg: #f0f0f0;
+  --tab-active-bg: #ffffff;
+  --tab-active-shadow: rgba(0, 0, 0, 0.1);
+  --tab-inactive-color: #444444;
+  --hour-line-color: #dddddd;
+  --weekly-border: #eeeeee;
+  --physics-bg: #f0f0f0;
+  --physics-legend-color: #555555;
+  --physics-empty-color: #aaaaaa;
+}
+
 body {
   font-family: system-ui, -apple-system, sans-serif;
-  background: #f0f0f0;
+  background: var(--bg-body);
   height: 100vh;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.2s ease;
 }
 
 #root {
