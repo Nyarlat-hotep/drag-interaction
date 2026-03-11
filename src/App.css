@@ -10,35 +10,60 @@
 .app {
   flex: 3;
   min-width: 0;
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 20px;
   padding: 2rem 2rem 2.5rem;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 24px var(--border-subtle);
   overflow-y: auto;
   scrollbar-width: none;
+  position: relative;
+  transition: background 0.2s ease;
 }
 .app::-webkit-scrollbar { display: none; }
 
 .physics-card {
   flex: 2;
   min-width: 0;
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 20px;
-  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 24px var(--border-subtle);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  transition: background 0.2s ease;
 }
 
 .app-title {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.4rem;
-  color: #111;
+  color: var(--fg-primary);
 }
 
 .app-subtitle {
   font-size: 0.95rem;
-  color: #666;
+  color: var(--fg-muted);
   margin-bottom: 1.75rem;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.theme-toggle:hover {
+  color: var(--fg-primary);
+  background: var(--tab-bar-bg);
 }
