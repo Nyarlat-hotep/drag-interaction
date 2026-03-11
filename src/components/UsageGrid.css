@@ -14,7 +14,7 @@
 
 .day-label {
   font-size: 0.78rem;
-  color: #888;
+  color: var(--fg-muted);
   font-weight: 500;
   margin-bottom: 0.25rem;
 }
@@ -32,7 +32,7 @@
 
 .day-total {
   font-size: 0.8rem;
-  color: #666;
+  color: var(--fg-muted);
   margin-top: 0.3rem;
 }
 
@@ -46,7 +46,7 @@
 
 .hour-label {
   font-size: 10px;
-  color: #aaa;
+  color: var(--fg-dim);
   line-height: 1;
   white-space: nowrap;
   flex-shrink: 0;
@@ -54,5 +54,5 @@
 
 .hour-line {
   flex: 1;
-  border-top: 1px dashed #ddd;
+  border-top: 1px dashed var(--hour-line-color);
 }

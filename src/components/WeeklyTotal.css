@@ -3,18 +3,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--weekly-border);
   margin-bottom: 1rem;
 }
 
 .weekly-label {
   font-size: 1rem;
   font-weight: 600;
-  color: #111;
+  color: var(--fg-primary);
 }
 
 .weekly-value {
   font-size: 1rem;
   font-weight: 600;
-  color: #111;
+  color: var(--fg-primary);
 }
