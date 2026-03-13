@@ -121,6 +121,8 @@ export default function App() {
     e.preventDefault()
     dragRef.current = { active: true }
     lastSlotRef.current = { [day]: slotIndex }
+    // Fill all slots above this one so the fill is always contiguous from the top
+    for (let i = 0; i < slotIndex; i++) applySlot(day, i, 1)
     applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
   }, [applySlot])
 
