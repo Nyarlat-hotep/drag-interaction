@@ -7,6 +7,22 @@ const { Engine, World, Bodies, Runner } = Matter
 
 const DOT_RADIUS = 12
 
+// Parse a hex color and return a lightened/darkened version
+function hexToRgb(hex) {
+  const n = parseInt(hex.replace('#', ''), 16)
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+}
+function lighten(hex, amount) {
+  const [r, g, b] = hexToRgb(hex)
+  const mix = (c) => Math.round(c + (255 - c) * amount)
+  return `rgb(${mix(r)},${mix(g)},${mix(b)})`
+}
+function darken(hex, amount) {
+  const [r, g, b] = hexToRgb(hex)
+  const mix = (c) => Math.round(c * (1 - amount))
+  return `rgb(${mix(r)},${mix(g)},${mix(b)})`
+}
+
 const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
   const canvasRef  = useRef()
   const engineRef  = useRef()
@@ -80,9 +96,17 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       ctx.clearRect(0, 0, W, H)
       for (const { body, color } of bodiesRef.current) {
         const { x, y } = body.position
+        const r = DOT_RADIUS
+        // Highlight offset — light source at top-left
+        const hx = x - r * 0.3
+        const hy = y - r * 0.35
+        const grad = ctx.createRadialGradient(hx, hy, r * 0.05, x, y, r)
+        grad.addColorStop(0,   lighten(color, 0.55))
+        grad.addColorStop(0.45, color)
+        grad.addColorStop(1,   darken(color, 0.35))
         ctx.beginPath()
-        ctx.arc(x, y, DOT_RADIUS, 0, Math.PI * 2)
-        ctx.fillStyle = color
+        ctx.arc(x, y, r, 0, Math.PI * 2)
+        ctx.fillStyle = grad
         ctx.fill()
       }
     }

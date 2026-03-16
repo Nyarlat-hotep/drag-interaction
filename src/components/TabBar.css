@@ -1,28 +1,41 @@
 .tab-bar {
+  position: relative;
   display: flex;
   gap: 0.5rem;
-  flex-wrap: wrap;
   margin-bottom: 1.75rem;
   background: var(--tab-bar-bg);
   padding: 4px;
   border-radius: 999px;
   width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sliding indicator — JS positions this to match the active button */
+.tab-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 999px;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .tab {
+  position: relative;
+  z-index: 1;
   padding: 0.4rem 1.1rem;
   border-radius: 999px;
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--tab-inactive-color);
   background: transparent;
-  border: 2px solid transparent;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.tab--active {
-  background: var(--tab-active-bg);
-  color: var(--fg-primary);
-  font-weight: 600;
-  box-shadow: 0 1px 4px var(--tab-active-shadow);
+  border: none;
+  white-space: nowrap;
+  transition: color 0.18s ease;
 }
