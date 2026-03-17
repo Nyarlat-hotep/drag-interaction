@@ -70,3 +70,63 @@
   color: var(--fg-primary);
   background: var(--tab-bar-bg);
 }
+
+.usage-area {
+  display: contents;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  #root {
+    height: auto;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .app-layout {
+    flex-direction: column;
+    height: auto;
+    gap: 1rem;
+  }
+
+  .app {
+    overflow-y: visible;
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .tab-bar {
+    overflow-x: auto;
+    min-height: fit-content;
+    scrollbar-width: none;
+    width: calc(100% + 2rem);
+    max-width: none;
+    margin-left: -1rem;
+    padding: 4px 1rem;
+    border-radius: 0;
+  }
+
+  .tab-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .usage-area {
+    display: none;
+  }
+
+  .mobile-day-grid {
+    display: flex;
+    min-height: 220px;
+    align-items: stretch;
+  }
+
+  .physics-card {
+    flex: none;
+    min-height: 250px;
+  }
+}

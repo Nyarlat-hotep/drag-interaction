@@ -1,10 +1,26 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { APPS, DAYS, makeEmptyUsage } from './data'
+import { APPS, DAYS, SLOTS_PER_DAY, makeEmptyUsage } from './data'
 import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
 import WeeklyTotal from './components/WeeklyTotal'
 import PhysicsContainer from './components/PhysicsContainer'
+import MobileDayGrid from './components/MobileDayGrid'
 import './App.css'
+
+function totalToSlots(total) {
+  const slots = new Array(SLOTS_PER_DAY).fill(0)
+  let remaining = total
+  for (let i = 0; i < SLOTS_PER_DAY && remaining > 0; i++) {
+    if (remaining >= 1) {
+      slots[i] = 1
+      remaining -= 1
+    } else {
+      slots[i] = 0.5
+      remaining -= 0.5
+    }
+  }
+  return slots
+}
 
 function computeFillValue(clientY, element) {
   const rect = element.getBoundingClientRect()
@@ -107,6 +123,14 @@ export default function App() {
     applySlot(day, slotIndex, value)
   }, [applySlot])
 
+  const handleDayChange = useCallback((day, newTotal) => {
+    setUsage(prev => {
+      const app = activeAppRef.current
+      const slots = totalToSlots(newTotal)
+      return { ...prev, [app]: { ...prev[app], [day]: slots } }
+    })
+  }, [])
+
   const handleKeyActivate = useCallback((day, slotIndex) => {
     setUsage(prev => {
       const app = activeAppRef.current
@@ -163,11 +187,7 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      <div
-        className="app"
-        onTouchMove={handleTouchMove}
-        style={{ touchAction: 'none' }}
-      >
+      <div className="app">
         <button
           className="theme-toggle"
           onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
@@ -196,15 +216,27 @@ export default function App() {
           Drag across the dots to paint your daily usage. Half-fill for 30 min, full for 1 hour.
         </p>
         <TabBar activeApp={activeApp} onSelect={setActiveApp} />
-        <UsageGrid
+        <MobileDayGrid
           usage={usage}
           activeApp={activeApp}
           activeColor={activeColor}
-          onSlotChange={handleSlotChange}
-          onPointerMove={handlePointerMove}
-          onKeyActivate={handleKeyActivate}
+          onDayChange={handleDayChange}
         />
-        <WeeklyTotal usage={usage} />
+        <div
+          className="usage-area"
+          onTouchMove={handleTouchMove}
+          style={{ touchAction: 'none' }}
+        >
+          <UsageGrid
+            usage={usage}
+            activeApp={activeApp}
+            activeColor={activeColor}
+            onSlotChange={handleSlotChange}
+            onPointerMove={handlePointerMove}
+            onKeyActivate={handleKeyActivate}
+          />
+          <WeeklyTotal usage={usage} />
+        </div>
       </div>
       <div className="physics-card">
         <PhysicsContainer ref={physicsRef} usage={usage} />
