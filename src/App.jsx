@@ -4,7 +4,6 @@ import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
 import WeeklyTotal from './components/WeeklyTotal'
 import PhysicsContainer from './components/PhysicsContainer'
-import MobileDayGrid from './components/MobileDayGrid'
 import './App.css'
 
 function computeFillValue(clientY, element) {
@@ -162,18 +161,6 @@ export default function App() {
     handleDragSlot(day, slotIndex, pillValue(relY, lastSlotRef.current[day] === slotIndex))
   }, [handleDragSlot])
 
-  // Mobile: convert a total hours value (0–24, snapped to 0.5) to individual slots
-  const handleDayChange = useCallback((day, newTotal) => {
-    setUsage(prev => {
-      const app = activeAppRef.current
-      const slots = new Array(24).fill(0)
-      const full = Math.floor(newTotal)
-      for (let i = 0; i < full; i++) slots[i] = 1
-      if (newTotal % 1 === 0.5 && full < 24) slots[full] = 0.5
-      return { ...prev, [app]: { ...prev[app], [day]: slots } }
-    })
-  }, [])
-
   return (
     <div className="app-layout">
       <div
@@ -218,12 +205,6 @@ export default function App() {
           onKeyActivate={handleKeyActivate}
         />
         <WeeklyTotal usage={usage} />
-        <MobileDayGrid
-          usage={usage}
-          activeApp={activeApp}
-          activeColor={activeColor}
-          onDayChange={handleDayChange}
-        />
       </div>
       <div className="physics-card">
         <PhysicsContainer ref={physicsRef} usage={usage} />
