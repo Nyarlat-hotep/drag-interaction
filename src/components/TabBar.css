@@ -8,12 +8,6 @@
   border-radius: 999px;
   width: fit-content;
   max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.tab-bar::-webkit-scrollbar {
-  display: none;
 }
 
 /* Sliding indicator — JS positions this to match the active button */
