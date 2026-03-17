@@ -65,7 +65,7 @@
 
 .hour-label {
   font-size: 10px;
-  color: var(--fg-dim);
+  color: var(--fg-muted);
   line-height: 1;
   white-space: nowrap;
   flex-shrink: 0;
@@ -73,5 +73,5 @@
 
 .hour-line {
   flex: 1;
-  border-top: 1px dashed var(--hour-line-color);
+  border-top: 1px dashed var(--fg-muted);
 }
