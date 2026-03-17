@@ -1,12 +1,12 @@
 import './WeeklyTotal.css'
-import { APPS, DAYS } from '../data'
+import { APPS, DAYS, HOURS_PER_SLOT } from '../data'
 
 function appTotal(appUsage) {
   let total = 0
   for (const day of DAYS) {
     for (const v of appUsage[day]) total += v
   }
-  return total
+  return total * HOURS_PER_SLOT
 }
 
 export default function WeeklyTotal({ usage }) {

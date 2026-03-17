@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { APPS, DAYS, SLOTS_PER_DAY, makeEmptyUsage } from './data'
+import { APPS, DAYS, SLOTS_PER_DAY, HOURS_PER_SLOT, makeEmptyUsage } from './data'
 import TabBar from './components/TabBar'
 import UsageGrid from './components/UsageGrid'
 import WeeklyTotal from './components/WeeklyTotal'
@@ -11,12 +11,12 @@ function totalToSlots(total) {
   const slots = new Array(SLOTS_PER_DAY).fill(0)
   let remaining = total
   for (let i = 0; i < SLOTS_PER_DAY && remaining > 0; i++) {
-    if (remaining >= 1) {
+    if (remaining >= HOURS_PER_SLOT) {
       slots[i] = 1
-      remaining -= 1
+      remaining -= HOURS_PER_SLOT
     } else {
       slots[i] = 0.5
-      remaining -= 0.5
+      remaining -= HOURS_PER_SLOT / 2
     }
   }
   return slots
@@ -260,7 +260,7 @@ export default function App() {
               return (
                 <span key={app.name} className="legend-item">
                   <span className="legend-dot" style={{ background: app.color }} />
-                  {app.name}: {total}h
+                  {app.name}: {total * HOURS_PER_SLOT}h
                 </span>
               )
             })}
@@ -268,14 +268,14 @@ export default function App() {
         )}
       </div>
       {dragTooltip && (() => {
-        const total = usage[activeApp][dragTooltip.day]?.reduce((s, v) => s + v, 0) ?? 0
-        if (total >= 6) return null
+        const hours = (usage[activeApp][dragTooltip.day]?.reduce((s, v) => s + v, 0) ?? 0) * HOURS_PER_SLOT
+        if (hours >= 6) return null
         return (
           <div
             className="desktop-drag-tooltip"
             style={{ left: dragTooltip.x, top: dragTooltip.y - 36, borderColor: activeColor, color: activeColor }}
           >
-            {total}h
+            {hours}h
           </div>
         )
       })()}

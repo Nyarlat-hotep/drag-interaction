@@ -1,12 +1,12 @@
 import Pill from './Pill'
 import './UsageGrid.css'
-import { DAYS, SLOTS_PER_DAY } from '../data'
+import { DAYS, SLOTS_PER_DAY, HOURS_PER_SLOT } from '../data'
 
-// Each row = 2 pills × max 1h = 2h. Markers sit after the row that completes each interval.
-const HOUR_MARKERS = { 0: '2h', 1: '4h' }
+// Each row = 2 pills × 0.5h = 1h. Markers sit after the row that completes each interval.
+const HOUR_MARKERS = { 1: '2h', 3: '4h' }
 
 function calcDayTotal(slots) {
-  return slots.reduce((sum, v) => sum + v, 0)
+  return slots.reduce((sum, v) => sum + v, 0) * HOURS_PER_SLOT
 }
 
 export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange, onPointerMove, onKeyActivate }) {
