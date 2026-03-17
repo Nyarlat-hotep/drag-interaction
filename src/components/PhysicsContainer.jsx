@@ -5,7 +5,9 @@ import { APPS, DAYS } from '../data'
 
 const { Engine, World, Bodies, Runner } = Matter
 
-const DOT_RADIUS = 12
+function getDotRadius() {
+  return window.innerWidth <= 768 ? 7 : 12
+}
 
 // Parse a hex color and return a lightened/darkened version
 function hexToRgb(hex) {
@@ -33,8 +35,9 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
     spawnDot(color) {
       if (!engineRef.current || !canvasRef.current) return
       const W = canvasRef.current.offsetWidth  // CSS pixels
+      const r = getDotRadius()
       const x = W * 0.1 + Math.random() * W * 0.8
-      const body = Bodies.circle(x, -DOT_RADIUS * 2, DOT_RADIUS, {
+      const body = Bodies.circle(x, -r * 2, r, {
         restitution: 0.4,
         friction: 0.1,
         frictionAir: 0.01,
@@ -65,10 +68,11 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const old = world.bodies.filter(b => b.isStatic && b.label === 'wall')
       old.forEach(w => World.remove(world, w))
       const opts = { isStatic: true, label: 'wall', friction: 0.3, restitution: 0.2 }
+      const r = getDotRadius()
       World.add(world, [
-        Bodies.rectangle(W / 2,              H + 15,       W + 100, 50,    opts), // floor
-        Bodies.rectangle(DOT_RADIUS - 25,    H / 2,        50,      H * 2, opts), // left  (inner face at DOT_RADIUS)
-        Bodies.rectangle(W - DOT_RADIUS + 25, H / 2,       50,      H * 2, opts), // right (inner face at W-DOT_RADIUS)
+        Bodies.rectangle(W / 2,        H + 15,  W + 100, 50,    opts), // floor
+        Bodies.rectangle(r - 25,       H / 2,   50,      H * 2, opts), // left
+        Bodies.rectangle(W - r + 25,   H / 2,   50,      H * 2, opts), // right
       ])
     }
 
@@ -96,7 +100,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       ctx.clearRect(0, 0, W, H)
       for (const { body, color } of bodiesRef.current) {
         const { x, y } = body.position
-        const r = DOT_RADIUS
+        const r = body.circleRadius
         // Highlight offset — light source at top-left
         const hx = x - r * 0.3
         const hy = y - r * 0.35
