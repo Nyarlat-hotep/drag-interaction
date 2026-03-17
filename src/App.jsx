@@ -164,7 +164,14 @@ export default function App() {
   // Pointer move on grid: elementFromPoint handles fast drags that skip pointerenter
   const handlePointerMove = useCallback((e) => {
     if (!dragRef.current.active) return
-    const pill = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-slot]')
+    let pill = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-slot]')
+    if (!pill) {
+      // Scan nearby Y positions to bridge non-pill gaps (hour marker divs are 16px tall)
+      for (const dy of [4, 8, 12, 16, 20, 24, -4, -8]) {
+        pill = document.elementFromPoint(e.clientX, e.clientY + dy)?.closest('[data-slot]')
+        if (pill) break
+      }
+    }
     if (!pill) return
     const slotIndex = Number(pill.dataset.slot)
     const day = pill.dataset.day
