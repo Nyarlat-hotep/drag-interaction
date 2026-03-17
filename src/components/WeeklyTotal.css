@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 0.75rem 0 0 0;
   border-top: 1px solid var(--weekly-border);
   margin-top: auto;
   margin-bottom: 0;
