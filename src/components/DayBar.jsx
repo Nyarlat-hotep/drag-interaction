@@ -17,7 +17,7 @@ export default function DayBar({ day, total, color, onChange }) {
     const rect = barRef.current.getBoundingClientRect()
     const relY = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
     const value = Math.round(relY * 24 * 2) / 2
-    const tipY = clientY - rect.top - 40
+    const tipY = clientY - rect.top - 72
     return { value, tipY }
   }
 
