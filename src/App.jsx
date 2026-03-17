@@ -269,7 +269,7 @@ export default function App() {
       </div>
       {dragTooltip && (() => {
         const total = usage[activeApp][dragTooltip.day]?.reduce((s, v) => s + v, 0) ?? 0
-        if (total >= 12) return null
+        if (total >= 6) return null
         return (
           <div
             className="desktop-drag-tooltip"
