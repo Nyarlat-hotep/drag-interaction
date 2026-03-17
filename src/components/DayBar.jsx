@@ -60,8 +60,8 @@ export default function DayBar({ day, total, color, onChange }) {
           className="day-bar-fill"
           style={{ height: `${fillPct}%`, backgroundColor: color }}
         />
-        {dragging && (
-          <div className="day-bar-tooltip" style={{ top: tooltipY }}>
+        {dragging && liveValue < 24 && (
+          <div className="day-bar-tooltip" style={{ top: tooltipY, borderColor: color }}>
             {formatHours(liveValue)}
           </div>
         )}
