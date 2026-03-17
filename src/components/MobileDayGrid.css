@@ -1,0 +1,6 @@
+.mobile-day-grid {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}

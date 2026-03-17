@@ -71,15 +71,19 @@
   background: var(--tab-bar-bg);
 }
 
-@media screen and (max-width: 768px) {
+/* Mobile-only: hide pill grid, show day bars */
+.mobile-day-grid {
+  display: none;
+}
 
+@media screen and (max-width: 768px) {
   .tab-bar {
     flex-wrap: nowrap;
     overflow-x: auto;
     justify-content: flex-start;
     margin: 0rem -1.25rem 2rem -1.25rem;
     scrollbar-width: none;
-    border-radius: 20px 0px 0px 20px
+    border-radius: 20px 0px 0px 20px;
   }
 
   .app-layout {
@@ -89,6 +93,19 @@
   .app {
     padding-right: 1.25rem;
     position: relative;
+    /* Let bars stretch the card height */
+    min-height: 420px;
+  }
+
+  .usage-grid,
+  .weekly-total {
+    display: none;
+  }
+
+  .mobile-day-grid {
+    display: flex;
+    flex: 1;
+    min-height: 0;
   }
 
   .physics-card {
