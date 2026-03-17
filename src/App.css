@@ -70,28 +70,3 @@
   color: var(--fg-primary);
   background: var(--tab-bar-bg);
 }
-
-@media screen and (max-width: 768px) {
-
-  .tab-bar {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    margin: 0rem -1.25rem 2rem -1.25rem;
-    scrollbar-width: none;
-    border-radius: 20px 0px 0px 20px
-  }
-
-  .app-layout {
-    flex-direction: column;
-  }
-
-  .app {
-    padding-right: 1.25rem;
-    position: relative;
-  }
-
-  .physics-card {
-    flex: 1;
-  }
-}
