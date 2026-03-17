@@ -208,6 +208,21 @@ export default function App() {
       </div>
       <div className="physics-card">
         <PhysicsContainer ref={physicsRef} usage={usage} />
+        {APPS.some(app => DAYS.some(day => usage[app.name][day].some(v => v > 0))) && (
+          <div className="physics-legend">
+            {APPS.map(app => {
+              const total = DAYS.reduce((sum, day) =>
+                sum + usage[app.name][day].reduce((s, v) => s + v, 0), 0)
+              if (total === 0) return null
+              return (
+                <span key={app.name} className="legend-item">
+                  <span className="legend-dot" style={{ background: app.color }} />
+                  {app.name}: {total}h
+                </span>
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

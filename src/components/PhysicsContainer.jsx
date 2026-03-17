@@ -66,7 +66,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       old.forEach(w => World.remove(world, w))
       const opts = { isStatic: true, label: 'wall', friction: 0.3, restitution: 0.2 }
       World.add(world, [
-        Bodies.rectangle(W / 2,              H + 23,       W + 100, 50,    opts), // floor
+        Bodies.rectangle(W / 2,              H + 15,       W + 100, 50,    opts), // floor
         Bodies.rectangle(DOT_RADIUS - 25,    H / 2,        50,      H * 2, opts), // left  (inner face at DOT_RADIUS)
         Bodies.rectangle(W - DOT_RADIUS + 25, H / 2,       50,      H * 2, opts), // right (inner face at W-DOT_RADIUS)
       ])
@@ -119,7 +119,6 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
     }
   }, [])
 
-  // Legend
   const hasAnyUsage = APPS.some(app =>
     DAYS.some(day => usage[app.name][day].some(v => v > 0))
   )
@@ -129,21 +128,6 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       <canvas ref={canvasRef} className="physics-canvas" />
       {!hasAnyUsage && (
         <div className="physics-empty">Fill in your usage to see the pile grow</div>
-      )}
-      {hasAnyUsage && (
-        <div className="physics-legend">
-          {APPS.map(app => {
-            const total = DAYS.reduce((sum, day) =>
-              sum + usage[app.name][day].reduce((s, v) => s + v, 0), 0)
-            if (total === 0) return null
-            return (
-              <span key={app.name} className="legend-item">
-                <span className="legend-dot" style={{ background: app.color }} />
-                {app.name}: {total}h
-              </span>
-            )
-          })}
-        </div>
       )}
     </div>
   )

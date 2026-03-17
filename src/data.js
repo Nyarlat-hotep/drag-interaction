@@ -1,7 +1,7 @@
 export const APPS = [
-  { name: 'Instagram', color: '#E1306C' },
+  { name: 'Instagram', color: '#EE1D52' },
   { name: 'Facebook',  color: '#1877F2' },
-  { name: 'TikTok',    color: '#EE1D52' },
+  { name: 'TikTok',    color: '#69C9D0' },
   { name: 'YouTube',   color: '#FF0000' },
   { name: 'X',         color: '#555555' },
 ]
