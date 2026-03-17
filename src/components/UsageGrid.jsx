@@ -3,7 +3,7 @@ import './UsageGrid.css'
 import { DAYS, SLOTS_PER_DAY } from '../data'
 
 // Each row = 2 pills × max 1h = 2h. Markers sit after the row that completes each interval.
-const HOUR_MARKERS = { 1: '4h', 3: '8h', 5: '12h', 7: '16h', 9: '20h' }
+const HOUR_MARKERS = { 1: '4h', 3: '8h' }
 
 function calcDayTotal(slots) {
   return slots.reduce((sum, v) => sum + v, 0)

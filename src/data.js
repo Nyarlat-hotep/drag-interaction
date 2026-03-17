@@ -8,7 +8,7 @@ export const APPS = [
 
 export const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-export const SLOTS_PER_DAY = 24 // 12 rows × 2 pills, each pill = 1 hour (0 | 0.5 | 1)
+export const SLOTS_PER_DAY = 12 // 6 rows × 2 pills, each pill = 1 hour (0 | 0.5 | 1)
 
 export function makeEmptyUsage() {
   const usage = {}

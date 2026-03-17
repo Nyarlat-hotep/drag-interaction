@@ -16,7 +16,7 @@ export default function DayBar({ day, total, color, onChange }) {
   function compute(clientY) {
     const rect = barRef.current.getBoundingClientRect()
     const relY = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
-    const value = Math.round(relY * 24 * 2) / 2
+    const value = Math.round(relY * 12 * 2) / 2
     const tipY = clientY - rect.top - 72
     return { value, tipY }
   }
@@ -60,7 +60,7 @@ export default function DayBar({ day, total, color, onChange }) {
           className="day-bar-fill"
           style={{ height: `${fillPct}%`, backgroundColor: color }}
         />
-        {dragging && liveValue < 24 && (
+        {dragging && liveValue < 12 && (
           <div className="day-bar-tooltip" style={{ top: tooltipY, borderColor: color, color }}>
             {formatHours(liveValue)}
           </div>
