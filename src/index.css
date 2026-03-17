@@ -2,9 +2,9 @@
 
 :root {
   color-scheme: dark;
-  --bg-body: #0f1117;
-  --bg-surface: #1a1d2e;
-  --bg-inset: #13151f;
+  --bg-body: #111111;
+  --bg-surface: #1c1c1c;
+  --bg-inset: #161616;
   --fg-primary: #e8e8f0;
   --fg-muted: #888898;
   --fg-dim: #55556a;
