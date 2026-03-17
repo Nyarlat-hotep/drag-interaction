@@ -20,7 +20,7 @@ export default function UsageGrid({ usage, activeApp, activeColor, onSlotChange,
             <div className="day-label">{day}</div>
             <div className="pill-rows">
               {Array.from({ length: SLOTS_PER_DAY / 2 }, (_, row) => (
-                <div key={row}>
+                <div key={`${activeApp}-${row}`}>
                   <div className="pill-row">
                     {[0, 1].map((col) => {
                       const slotIndex = row * 2 + col
