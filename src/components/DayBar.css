@@ -56,8 +56,8 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--fg-primary);
-  color: var(--bg-surface);
+  background: var(--bg-inset);
+  border: 1.5px solid transparent;
   font-size: 0.7rem;
   font-weight: 600;
   padding: 3px 7px;

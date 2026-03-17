@@ -266,7 +266,7 @@ export default function App() {
         return (
           <div
             className="desktop-drag-tooltip"
-            style={{ left: dragTooltip.x, top: dragTooltip.y - 36 }}
+            style={{ left: dragTooltip.x, top: dragTooltip.y - 36, borderColor: activeColor, color: activeColor }}
           >
             {total}h
           </div>
