@@ -75,6 +75,20 @@
   display: contents;
 }
 
+.desktop-drag-tooltip {
+  position: fixed;
+  transform: translateX(-50%);
+  background: var(--fg-primary);
+  color: var(--bg-surface);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+}
+
 @media (max-width: 768px) {
   body {
     overflow-y: auto;

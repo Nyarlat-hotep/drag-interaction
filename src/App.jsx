@@ -35,6 +35,7 @@ export default function App() {
   const activeAppRef = useRef(activeApp)
   const physicsRef  = useRef()
   const [theme, setTheme] = useState('dark')
+  const [dragTooltip, setDragTooltip] = useState(null) // { x, y, day }
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme === 'light' ? 'light' : ''
@@ -51,6 +52,7 @@ export default function App() {
     const end = () => {
       dragRef.current.active = false
       lastSlotRef.current = {}
+      setDragTooltip(null)
     }
     window.addEventListener('pointerup', end)
     return () => window.removeEventListener('pointerup', end)
@@ -148,6 +150,7 @@ export default function App() {
     // Fill all slots above this one so the fill is always contiguous from the top
     for (let i = 0; i < slotIndex; i++) applySlot(day, i, 1)
     applySlot(day, slotIndex, computeFillValue(e.clientY, e.currentTarget))
+    setDragTooltip({ x: e.clientX, y: e.clientY, day })
   }, [applySlot])
 
   // Compute fill value from cursor position within a pill.
@@ -168,6 +171,7 @@ export default function App() {
     const rect = pill.getBoundingClientRect()
     const relY = (e.clientY - rect.top) / rect.height
     handleDragSlot(day, slotIndex, pillValue(relY, lastSlotRef.current[day] === slotIndex))
+    setDragTooltip({ x: e.clientX, y: e.clientY, day })
   }, [handleDragSlot])
 
   // Touch support: touchmove fires only on the element where touch started,
@@ -256,6 +260,18 @@ export default function App() {
           </div>
         )}
       </div>
+      {dragTooltip && (() => {
+        const total = usage[activeApp][dragTooltip.day]?.reduce((s, v) => s + v, 0) ?? 0
+        if (total >= 24) return null
+        return (
+          <div
+            className="desktop-drag-tooltip"
+            style={{ left: dragTooltip.x, top: dragTooltip.y - 36 }}
+          >
+            {total}h
+          </div>
+        )
+      })()}
     </div>
   )
 }
