@@ -23,7 +23,7 @@
 .pill-rows {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 14px;
   flex: 1;
   min-height: 0;
 }
@@ -47,11 +47,12 @@
   font-size: 0.8rem;
   color: var(--fg-muted);
   margin-top: 0.3rem;
+  margin-bottom: 0.75rem;
 }
 
 .hour-marker {
   position: absolute;
-  bottom: -8px;
+  bottom: -15px;
   left: -24px;
   right: -6px;
   height: 16px;
