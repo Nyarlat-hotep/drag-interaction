@@ -33,5 +33,5 @@
 [data-theme="light"] .pill-fill {
   background-image:
     radial-gradient(ellipse at 32% 32%, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.08) 38%, transparent 58%),
-    linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.2) 100%);
+    linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.12) 100%);
 }
