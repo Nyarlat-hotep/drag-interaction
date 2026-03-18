@@ -13,8 +13,7 @@
   min-width: 0;
   background: var(--bg-surface);
   border-radius: 20px;
-  padding: 2rem 2rem 2.5rem;
-  box-shadow: 0 2px 24px var(--border-subtle);
+  padding: 2rem 2rem 2rem;
   overflow-y: auto;
   scrollbar-width: none;
   position: relative;
@@ -29,11 +28,12 @@
   min-width: 0;
   background: var(--bg-surface);
   border-radius: 20px;
-  box-shadow: 0 2px 24px var(--border-subtle);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   transition: background 0.2s ease;
+  align-self: flex-start;
+  height: 50%;
 }
 
 .app-title {

@@ -98,6 +98,26 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const W = canvas.offsetWidth
       const H = canvas.offsetHeight
       ctx.clearRect(0, 0, W, H)
+
+      // Sweet spot line
+      const isDark = !document.documentElement.dataset.theme
+      const lineColor  = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)'
+      const labelColor = isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)'
+      const sweetY = H * 0.45
+      ctx.save()
+      ctx.setLineDash([5, 5])
+      ctx.strokeStyle = lineColor
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      ctx.moveTo(0, sweetY)
+      ctx.lineTo(W, sweetY)
+      ctx.stroke()
+      ctx.setLineDash([])
+      ctx.font = '600 10px "Space Grotesk", system-ui, sans-serif'
+      ctx.fillStyle = labelColor
+      ctx.fillText('sweet spot', 8, sweetY - 5)
+      ctx.restore()
+
       for (const { body, color } of bodiesRef.current) {
         const { x, y } = body.position
         const r = body.circleRadius
