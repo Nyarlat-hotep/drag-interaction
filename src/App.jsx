@@ -251,21 +251,25 @@ export default function App() {
       </div>
       <div className="physics-card">
         <PhysicsContainer ref={physicsRef} usage={usage} />
-        {APPS.some(app => DAYS.some(day => usage[app.name][day].some(v => v > 0))) && (
-          <div className="physics-legend">
-            {APPS.map(app => {
-              const total = DAYS.reduce((sum, day) =>
-                sum + usage[app.name][day].reduce((s, v) => s + v, 0), 0)
-              if (total === 0) return null
-              return (
-                <span key={app.name} className="legend-item">
-                  <span className="legend-dot" style={{ background: app.color }} />
-                  {app.name}: {total * HOURS_PER_SLOT}h
-                </span>
-              )
-            })}
-          </div>
-        )}
+        <div className="physics-legend">
+          {APPS.map(app => {
+            const total = DAYS.reduce((sum, day) =>
+              sum + usage[app.name][day].reduce((s, v) => s + v, 0), 0)
+            const hours = total * HOURS_PER_SLOT
+            return (
+              <span key={app.name} className="legend-item">
+                <span className="legend-dot" style={{ background: app.color }} />
+                {app.name}: {hours === 0 ? '0min' : (() => {
+                  const wh = Math.floor(hours)
+                  const mins = Math.round((hours - wh) * 60)
+                  if (mins === 0) return `${wh}h`
+                  if (wh === 0) return `${mins}min`
+                  return `${wh}h ${mins}min`
+                })()}
+              </span>
+            )
+          })}
+        </div>
       </div>
       {dragTooltip && (() => {
         const hours = (usage[activeApp][dragTooltip.day]?.reduce((s, v) => s + v, 0) ?? 0) * HOURS_PER_SLOT
