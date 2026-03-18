@@ -136,7 +136,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
         const grad = ctx.createRadialGradient(hx, hy, r * 0.05, x, y, r)
         grad.addColorStop(0,   lighten(color, 0.55))
         grad.addColorStop(0.45, color)
-        grad.addColorStop(1,   darken(color, 0.35))
+        grad.addColorStop(1,   darken(color, isDark ? 0.35 : 0.18))
         ctx.beginPath()
         ctx.arc(x, y, r, 0, Math.PI * 2)
         ctx.fillStyle = grad
