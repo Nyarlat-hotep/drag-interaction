@@ -61,7 +61,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
 
-    const engine = Engine.create({ gravity: { y: 1.5 } })
+    const engine = Engine.create({ gravity: { y: 0.4 } })
     engineRef.current = engine
 
     function rebuildWalls(world, W, H) {
