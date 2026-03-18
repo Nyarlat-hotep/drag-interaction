@@ -6,7 +6,7 @@ import { APPS, DAYS } from '../data'
 const { Engine, World, Bodies, Runner } = Matter
 
 function getDotRadius() {
-  return window.innerWidth <= 768 ? 7 : 12
+  return window.innerWidth <= 768 ? 3 : 5
 }
 
 // Parse a hex color and return a lightened/darkened version
