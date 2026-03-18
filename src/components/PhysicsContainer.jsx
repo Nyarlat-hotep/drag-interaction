@@ -111,7 +111,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
         const rows = Math.ceil(560 / ballsPerRow)
         sweetY = Math.max(20, H - rows * (2 * r))
       } else {
-        sweetY = Math.max(20, H * 0.70 - 72)
+        sweetY = Math.max(20, H * 0.70 - 112)
       }
       ctx.save()
       ctx.setLineDash([5, 5])
@@ -122,7 +122,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       ctx.lineTo(W, sweetY)
       ctx.stroke()
       ctx.setLineDash([])
-      ctx.font = '600 10px "Space Grotesk", system-ui, sans-serif'
+      ctx.font = '400 10px "Space Grotesk", system-ui, sans-serif'
       ctx.fillStyle = labelColor
       ctx.fillText('sweet spot', 8, sweetY - 5)
       ctx.restore()
@@ -159,9 +159,6 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
   return (
     <div className="physics-wrap">
       <canvas ref={canvasRef} className="physics-canvas" />
-      {!hasAnyUsage && (
-        <div className="physics-empty">Fill in your usage to see the pile grow</div>
-      )}
     </div>
   )
 })
