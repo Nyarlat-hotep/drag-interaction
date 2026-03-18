@@ -122,9 +122,9 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       ctx.lineTo(W, sweetY)
       ctx.stroke()
       ctx.setLineDash([])
-      ctx.font = '400 10px "Space Grotesk", system-ui, sans-serif'
+      ctx.font = '400 12px "Space Grotesk", system-ui, sans-serif'
       ctx.fillStyle = labelColor
-      ctx.fillText('sweet spot', 8, sweetY - 5)
+      ctx.fillText('Human average', 8, sweetY - 5)
       ctx.restore()
 
       for (const { body, color } of bodiesRef.current) {
