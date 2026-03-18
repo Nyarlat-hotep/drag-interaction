@@ -107,7 +107,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const ballsPerRow = Math.max(1, Math.floor(W / (2 * r)))
       const sweetSpotBalls = 96 // 4h / 0.5h per slot * 12 balls per slot
       const rows = Math.ceil(sweetSpotBalls / ballsPerRow)
-      const sweetY = H - rows * (2 * r) - r * 3
+      const sweetY = H - (rows + 1) * (2 * r) - r * 3
       ctx.save()
       ctx.setLineDash([5, 5])
       ctx.strokeStyle = lineColor
