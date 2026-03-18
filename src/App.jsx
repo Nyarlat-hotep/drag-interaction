@@ -71,10 +71,10 @@ export default function App() {
         for (let i = 0; i < nextSlots.length; i++) {
           const delta = nextSlots[i] - prevSlots[i]
           if (delta > 0) {
-            const dots = Math.round(delta / 0.5) * 10
+            const dots = Math.round(delta * 10)
             for (let d = 0; d < dots; d++) physicsRef.current?.spawnDot(app.color)
           } else if (delta < 0) {
-            const dots = Math.round(Math.abs(delta) / 0.5) * 10
+            const dots = Math.round(Math.abs(delta) * 10)
             for (let d = 0; d < dots; d++) physicsRef.current?.removeDot(app.color)
           }
         }
