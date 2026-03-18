@@ -6,7 +6,7 @@ import { APPS, DAYS } from '../data'
 const { Engine, World, Bodies, Runner } = Matter
 
 function getDotRadius() {
-  return window.innerWidth <= 768 ? 3 : 5
+  return window.innerWidth <= 768 ? 3 : 4
 }
 
 // Parse a hex color and return a lightened/darkened version
@@ -103,7 +103,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const isDark = !document.documentElement.dataset.theme
       const lineColor  = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)'
       const labelColor = isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)'
-      const sweetY = H * 0.45
+      const sweetY = H * 0.72
       ctx.save()
       ctx.setLineDash([5, 5])
       ctx.strokeStyle = lineColor
