@@ -109,7 +109,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       if (isMobile) {
         const ballsPerRow = Math.max(1, Math.floor(W / (2 * r)))
         const rows = Math.ceil(560 / ballsPerRow)
-        sweetY = Math.max(20, H - rows * (2 * r) - 20)
+        sweetY = Math.max(20, H - rows * (2 * r))
       } else {
         sweetY = Math.max(20, H * 0.70 - 72)
       }
