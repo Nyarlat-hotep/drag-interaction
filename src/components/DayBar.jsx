@@ -43,7 +43,7 @@ export default function DayBar({ day, total, color, onChange }) {
     setDragging(false)
   }
 
-  const fillPct = (total / 24) * 100
+  const fillPct = (total / 6) * 100
 
   return (
     <div className="day-bar-wrapper">
