@@ -275,7 +275,14 @@ export default function App() {
             className="desktop-drag-tooltip"
             style={{ left: dragTooltip.x, top: dragTooltip.y - 36, borderColor: activeColor, color: activeColor }}
           >
-            {hours}h
+            {(() => {
+              if (hours === 0) return '0min'
+              const wh = Math.floor(hours)
+              const mins = Math.round((hours - wh) * 60)
+              if (mins === 0) return `${wh}h`
+              if (wh === 0) return `${mins}min`
+              return `${wh}h ${mins}min`
+            })()}
           </div>
         )
       })()}

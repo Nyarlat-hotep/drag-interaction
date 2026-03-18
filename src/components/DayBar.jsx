@@ -2,9 +2,12 @@ import { useRef, useState } from 'react'
 import './DayBar.css'
 
 function formatHours(h) {
-  if (h === 0) return '0h'
-  if (h % 1 === 0) return `${h}h`
-  return `${h}h`
+  if (h === 0) return '0min'
+  const wholeHours = Math.floor(h)
+  const mins = Math.round((h - wholeHours) * 60)
+  if (mins === 0) return `${wholeHours}h`
+  if (wholeHours === 0) return `${mins}min`
+  return `${wholeHours}h ${mins}min`
 }
 
 export default function DayBar({ day, total, color, onChange }) {
