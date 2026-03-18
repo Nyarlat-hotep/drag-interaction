@@ -40,7 +40,7 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const body = Bodies.circle(x, -r * 2, r, {
         restitution: 0.4,
         friction: 0.1,
-        frictionAir: 0.01,
+        frictionAir: 0.002,
         label: color,
       })
       World.add(engineRef.current.world, body)
