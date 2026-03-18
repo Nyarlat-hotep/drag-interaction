@@ -103,7 +103,11 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const isDark = !document.documentElement.dataset.theme
       const lineColor  = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)'
       const labelColor = isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)'
-      const sweetY = H * 0.82
+      const r = getDotRadius()
+      const ballsPerRow = Math.max(1, Math.floor(W / (2 * r)))
+      const sweetSpotBalls = 96 // 4h / 0.5h per slot * 12 balls per slot
+      const rows = Math.ceil(sweetSpotBalls / ballsPerRow)
+      const sweetY = H - rows * (2 * r) - r * 3
       ctx.save()
       ctx.setLineDash([5, 5])
       ctx.strokeStyle = lineColor
