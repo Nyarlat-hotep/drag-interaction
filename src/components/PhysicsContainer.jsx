@@ -105,9 +105,11 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const labelColor = isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)'
       const r = getDotRadius()
       const ballsPerRow = Math.max(1, Math.floor(W / (2 * r)))
-      const sweetSpotBalls = 672 // 7 days * 4h/day / 0.5h per slot * 12 balls per slot
+      const sweetSpotBalls = 336 // calibrated: 14h × 12 balls/slot
       const rows = Math.ceil(sweetSpotBalls / ballsPerRow)
-      const sweetY = Math.max(20, H - (rows + 1) * (2 * r) - r * 3)
+      // Physics balls stack ~4x looser than theoretical tight packing
+      const pileH = Math.min(H * 0.75, rows * (2 * r) * 4)
+      const sweetY = Math.max(20, H - pileH - r * 2)
       ctx.save()
       ctx.setLineDash([5, 5])
       ctx.strokeStyle = lineColor
