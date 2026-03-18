@@ -26,6 +26,6 @@
   border-radius: 999px;
   transition: height 0.08s ease;
   background-image:
-    radial-gradient(ellipse at 35% 18%, rgba(255, 255, 255, 0.52) 0%, transparent 52%),
-    linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.32) 100%);
+    radial-gradient(ellipse at 32% 22%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.12) 38%, transparent 58%),
+    linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.5) 100%);
 }
