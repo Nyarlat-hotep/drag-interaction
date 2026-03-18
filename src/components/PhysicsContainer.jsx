@@ -107,8 +107,9 @@ const PhysicsContainer = forwardRef(function PhysicsContainer({ usage }, ref) {
       const ballsPerRow = Math.max(1, Math.floor(W / (2 * r)))
       const sweetSpotBalls = 336 // calibrated: 14h × 12 balls/slot
       const rows = Math.ceil(sweetSpotBalls / ballsPerRow)
-      // Physics balls stack ~4x looser than theoretical tight packing
-      const pileH = rows * (2 * r) * 4
+      // Packing factor: wide containers stack looser (~4x), narrow ones tighter (~2x)
+      const packingFactor = Math.max(2, Math.min(4, 2 + (W - 400) / 250))
+      const pileH = rows * (2 * r) * packingFactor
       const sweetY = Math.max(20, H - pileH - r * 2)
       ctx.save()
       ctx.setLineDash([5, 5])
